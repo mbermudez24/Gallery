@@ -4,16 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para cargar fotos de una carpeta
     function loadPhotos(folderName) {
         const folderPath = `./assets/img/${folderName}/`;
-        console.log(folderPath);
+
 
         fetch(folderPath)
             .then(response => response.text())
             .then(data => {
-                console.log(here);
+                console.log('here');
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, "text/html");
                 const images = doc.body.querySelectorAll('a[href$=".jpg"]');
-                console.log(images)
+
                 console.log(doc)
 
                 images.forEach(aTag => {
