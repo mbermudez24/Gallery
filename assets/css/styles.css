@@ -1,0 +1,81 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+#photo-gallery {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    grid-auto-rows: 500px;
+    gap: 20px;
+    justify-content: center;
+    grid-auto-flow: dense;
+}
+
+
+.photo {
+    position: relative;
+
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%;
+    /* Asegura que la imagen no sea más ancha que su contenedor */
+    transition: transform 0.3s ease;
+    /* Adding a smooth transition for image scaling */
+}
+
+.title h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.title span {
+    margin: 0;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    padding: 16px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Mouseover effect for title opacity */
+.gallery-item:hover .title {
+    opacity: 1;
+}
+
+.span-col {
+    grid-column: span 2;
+}
+
+.span-row {
+    grid-row: span 2;
+    /* La imagen se extenderá automáticamente por 2 filas */
+    overflow: hidden;
+
+
+}
