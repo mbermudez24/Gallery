@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     galleryItem.innerHTML = `
            
-                            <img src="${'./' + aTag.getAttribute("href")}" alt="${`${galleryItem.classList} Photo `}">
+                            <img src="${aTag.getAttribute("href")}" alt="${`${galleryItem.classList} Photo `}">
                             <div class="title">
                                 <h3>Titulo</h3>
                             </div>
