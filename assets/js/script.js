@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para cargar fotos de una carpeta
     function loadPhotos(folderName) {
-        const folderPath = `./assets/img/${folderName}/`;
+        const folderPath = "./assets/img/" + folderName + "/";
         console.log(folderPath);
 
         fetch(folderPath)
