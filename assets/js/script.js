@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Función para cargar fotos de una carpeta
     function loadPhotos(folderName) {
         const folderPath = `assets/img/${folderName}/`;
+        console.log(folderPath);
 
         fetch(folderPath)
             .then(response => response.text())
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, "text/html");
                 const images = doc.body.querySelectorAll('a[href$=".jpg"]');
+                console.log(images)
 
                 images.forEach(aTag => {
                     const galleryItem = document.createElement('div');
@@ -49,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     galleryItem.querySelector('img').addEventListener('click', function () {
                         modification(galleryItem, folderName, aTag.getAttribute("href"));
                     });
+                    console.log(galleryItem)
 
                     photoGallery.appendChild(galleryItem);
                 });
