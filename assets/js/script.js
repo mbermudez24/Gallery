@@ -3,25 +3,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para cargar fotos de una carpeta
     function loadPhotos(folderName) {
-        const folderPath = `./assets/img/${folderName}/`;
-
+        const folderPath = `assets/img/${folderName}/`;
 
         fetch(folderPath)
             .then(response => response.text())
             .then(data => {
-                console.log('here');
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, "text/html");
                 const images = doc.body.querySelectorAll('a[href$=".jpg"]');
 
-                console.log(doc)
-
                 images.forEach(aTag => {
-
                     const galleryItem = document.createElement('div');
                     galleryItem.classList.add(folderName.toLowerCase());
                     galleryItem.classList.add("photo");
-                    console.log(galleryItem);
 
                     // Recuperar clases almacenadas en localStorage
                     const storedClassesKey = `galleryClasses_${folderName}_${aTag.getAttribute("href")}`;
@@ -30,17 +24,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         const classesArray = JSON.parse(storedClasses);
                         galleryItem.classList.add(...classesArray);
                     }
-                    console.log(galleryItem);
 
                     galleryItem.innerHTML = `
            
-                            <img src="${aTag.getAttribute("href")}" alt="${`${galleryItem.classList} Photo `}">
+                            <img src="${'.' + aTag.getAttribute("href")}" alt="${`${galleryItem.classList} Photo `}">
                             <div class="title">
                                 <h3>Titulo</h3>
                             </div>
         
                     `;
-                    console.log(galleryItem);
 
                     galleryItem.addEventListener('mouseover', function () {
                         this.querySelector('img').style.transform = 'scale(1.1)';
@@ -57,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     galleryItem.querySelector('img').addEventListener('click', function () {
                         modification(galleryItem, folderName, aTag.getAttribute("href"));
                     });
-                    console.log(galleryItem)
 
                     photoGallery.appendChild(galleryItem);
                 });
