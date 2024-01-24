@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función para cargar fotos de una carpeta
     function loadPhotos(folderName) {
-        const folderPath = `assets/img/${folderName}/`;
+        const folderPath = `./assets/img/${folderName}/`;
         console.log(folderPath);
 
         fetch(folderPath)
@@ -15,9 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(images)
 
                 images.forEach(aTag => {
+
                     const galleryItem = document.createElement('div');
                     galleryItem.classList.add(folderName.toLowerCase());
                     galleryItem.classList.add("photo");
+                    console.log(galleryItem);
 
                     // Recuperar clases almacenadas en localStorage
                     const storedClassesKey = `galleryClasses_${folderName}_${aTag.getAttribute("href")}`;
@@ -26,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const classesArray = JSON.parse(storedClasses);
                         galleryItem.classList.add(...classesArray);
                     }
+                    console.log(galleryItem);
 
                     galleryItem.innerHTML = `
            
@@ -35,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
         
                     `;
+                    console.log(galleryItem);
 
                     galleryItem.addEventListener('mouseover', function () {
                         this.querySelector('img').style.transform = 'scale(1.1)';
