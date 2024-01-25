@@ -1,67 +1,88 @@
 document.addEventListener("DOMContentLoaded", function () {
     const photoGallery = document.getElementById("photo-gallery");
 
-    // Función para cargar fotos de una carpeta
     function loadPhotos(folderName) {
-        const folder = "assets/img/";
-        const folderPath = folder + folderName;
+        const folderPath = `assets/img/${folderName}/`;
         console.log(folderPath);
 
+        // Obtener las imágenes directamente, no es necesario usar fetch
+        const numberOfImages = countImagesInFolder(folderName);
+        const images = generateImagePaths(folderPath, numberOfImages);
 
-        fetch(folderPath)
-            .then(response => response.text())
+        images.forEach(imgSrc => {
+            const galleryItem = document.createElement('div');
+            galleryItem.classList.add(folderName.toLowerCase());
+            galleryItem.classList.add("photo");
 
-            .then(data => {
-                const parser = new DOMParser();
-                console.log(parser);
-                const doc = parser.parseFromString(data, "text/html");
-                console.log(doc);
-                const images = doc.body.querySelectorAll('a[href$=".jpg"]');
-                console.log(images)
+            // Recuperar clases almacenadas en localStorage
+            const storedClassesKey = `galleryClasses_${folderName}_${imgSrc}`;
+            const storedClasses = localStorage.getItem(storedClassesKey);
+            if (storedClasses) {
+                const classesArray = JSON.parse(storedClasses);
+                galleryItem.classList.add(...classesArray);
+            }
 
-                images.forEach(aTag => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.classList.add(folderName.toLowerCase());
-                    galleryItem.classList.add("photo");
+            galleryItem.innerHTML = `
+                <img src="${imgSrc}" alt="${`${galleryItem.classList} Photo `}">
+                <div class="title">
+                    <h3>Titulo</h3>
+                </div>
+            `;
 
-                    // Recuperar clases almacenadas en localStorage
-                    const storedClassesKey = `galleryClasses_${folderName}_${aTag.getAttribute("href")}`;
-                    const storedClasses = localStorage.getItem(storedClassesKey);
-                    if (storedClasses) {
-                        const classesArray = JSON.parse(storedClasses);
-                        galleryItem.classList.add(...classesArray);
-                    }
+            galleryItem.addEventListener('mouseover', function () {
+                this.querySelector('img').style.transform = 'scale(1.1)';
+                this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.4)';
+                this.querySelector('.title').style.opacity = '1';
+            });
 
-                    galleryItem.innerHTML = `
-           
-                            <img src="${'.' + aTag.getAttribute("href")}" alt="${`${galleryItem.classList} Photo `}">
-                            <div class="title">
-                                <h3>Titulo</h3>
-                            </div>
-        
-                    `;
+            galleryItem.addEventListener('mouseout', function () {
+                this.querySelector('img').style.transform = 'scale(1)';
+                this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                this.querySelector('.title').style.opacity = '0';
+            });
 
-                    galleryItem.addEventListener('mouseover', function () {
-                        this.querySelector('img').style.transform = 'scale(1.1)';
-                        this.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.4)';
-                        this.querySelector('.title').style.opacity = '1';
-                    });
+            galleryItem.querySelector('img').addEventListener('click', function () {
+                modification(galleryItem, folderName, imgSrc);
+            });
 
-                    galleryItem.addEventListener('mouseout', function () {
-                        this.querySelector('img').style.transform = 'scale(1)';
-                        this.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-                        this.querySelector('.title').style.opacity = '0';
-                    });
+            photoGallery.appendChild(galleryItem);
+        });
 
-                    galleryItem.querySelector('img').addEventListener('click', function () {
-                        modification(galleryItem, folderName, aTag.getAttribute("href"));
-                    });
 
-                    photoGallery.appendChild(galleryItem);
-                });
-            })
-            .catch(error => console.error(error));
     }
+
+    function countImagesInFolder(FolderName) {
+        if (FolderName === 'assets/img/Argentina/') {
+            return 7;
+        }
+        else if (FolderName === 'Colombia') {
+            console.log('entró')
+            return 12;
+        }
+        else if (FolderName === 'France') {
+            return 6;
+        } else if (FolderName === 'Italy') {
+            return 21;
+        }
+        else if (FolderName === 'Spain') {
+            return 3;
+        } else if (FolderName === 'Switzerland') {
+            return 9;
+        }
+        else if (FolderName === 'USA') {
+            return 19;
+        }
+
+    }
+
+    function generateImagePaths(folderPath, numberOfImages) {
+        const images = [];
+        for (let i = 1; i <= numberOfImages; i++) {
+            images.push(`${folderPath}image${i}.jpg`);
+        }
+        return images;
+    }
+
 
     // Cargar fotos de cada carpeta
     loadPhotos("Colombia");
