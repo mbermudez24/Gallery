@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function loadPhotos(folderName) {
         const folderPath = `assets/img/${folderName}/`;
-        console.log(folderPath);
 
         // Obtener las imágenes directamente, no es necesario usar fetch
         const numberOfImages = countImagesInFolder(folderName);
@@ -22,13 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 galleryItem.classList.add(...classesArray);
             }
 
+            const storedContentKey = `galleryContent_${folderName}_${imgSrc}`;
+            const storedContent = localStorage.getItem(storedContentKey);
+            const defaultContent = "Lugar"; // Puedes establecer un valor predeterminado si no hay contenido almacenado
+
             galleryItem.innerHTML = `
-                <img src="${imgSrc}" alt="${`${galleryItem.classList} Photo `}">
-                <div class="title">
-                    <h3>${folderName}</h3>
-                    <p>Lugar</p>
-                </div>
-            `;
+                    <img src="${imgSrc}" alt="${`${galleryItem.classList} Photo `}">
+                    <div class="title">
+                        <h3>${folderName}</h3>
+                        <p>${storedContent || defaultContent}</p>
+                    </div>
+                `;
 
             galleryItem.addEventListener('mouseover', function () {
                 this.querySelector('img').style.transform = 'scale(1.1)';
@@ -48,8 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             photoGallery.appendChild(galleryItem);
         });
-
-
     }
 
     function countImagesInFolder(FolderName) {
@@ -84,44 +85,38 @@ document.addEventListener("DOMContentLoaded", function () {
         return images;
     }
 
-
-    // Cargar fotos de cada carpeta
-    loadPhotos("Colombia");
-    loadPhotos("Argentina");
-    loadPhotos("Spain");
-    loadPhotos("USA");
-    loadPhotos("Switzerland");
-    loadPhotos("Italy");
-    loadPhotos("France");
-
-    // Función que se llama al hacer clic en el botón y pide una contraseña
     function modification(element, folderName, imageSrc) {
         const password = prompt("Enter the password:");
         if (password === "manuel") {
-            const action = prompt("What do you want to do? (Type 'add' to add a class, 'delete' to remove a class)");
+            const action = prompt("What do you want to do? (Type 'add' to add a class, 'delete' to remove a class, 'modify' to modify <p>)");
 
-            if (action === "add") {
-                const className = prompt("Enter the name of the class to add:");
+            if (action === "add" || action === "delete" || action === "modify") {
+                // Acceder al elemento <p> dentro del <div> con la clase "title"
+                const titleParagraph = element.querySelector('.title p');
 
-                // Agregar clase al elemento
-                element.classList.add(className);
+                if (action === "add") {
+                    const className = prompt("Enter the name of the class to add:");
+                    // Agregar clase al elemento
+                    element.classList.add(className);
+                } else if (action === "delete") {
+                    const classNameToDelete = prompt("Enter the name of the class to delete:");
+                    // Eliminar clase del elemento
+                    element.classList.remove(classNameToDelete);
+                } else if (action === "modify") {
+                    const newContent = prompt("Enter the new content for the <p>:");
+                    // Modificar el contenido del <p>
+                    titleParagraph.textContent = newContent;
+                }
 
-                // Obtener y actualizar clases almacenadas en localStorage
+                // Obtener y actualizar clases y contenido almacenados en localStorage
                 const currentClasses = element.classList;
                 const classesArray = Array.from(currentClasses);
                 const storedClassesKey = `galleryClasses_${folderName}_${imageSrc}`;
                 localStorage.setItem(storedClassesKey, JSON.stringify(classesArray));
-            } else if (action === "delete") {
-                const classNameToDelete = prompt("Enter the name of the class to delete:");
 
-                // Eliminar clase del elemento
-                element.classList.remove(classNameToDelete);
+                const storedContentKey = `galleryContent_${folderName}_${imageSrc}`;
+                localStorage.setItem(storedContentKey, titleParagraph.textContent);
 
-                // Obtener y actualizar clases almacenadas en localStorage
-                const currentClasses = element.classList;
-                const classesArray = Array.from(currentClasses);
-                const storedClassesKey = `galleryClasses_${folderName}_${imageSrc}`;
-                localStorage.setItem(storedClassesKey, JSON.stringify(classesArray));
             } else {
                 alert("Unrecognized action.");
             }
@@ -132,4 +127,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Cargar fotos de cada carpeta
+    loadPhotos("Colombia");
+    loadPhotos("Argentina");
+    loadPhotos("Spain");
+    loadPhotos("USA");
+    loadPhotos("Switzerland");
+    loadPhotos("Italy");
+    loadPhotos("France");
 });
