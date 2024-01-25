@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
         else if (FolderName === 'France') {
             return 6;
         } else if (FolderName === 'Italy') {
-            return 21;
+            return 20;
         }
         else if (FolderName === 'Spain') {
             return 3;
