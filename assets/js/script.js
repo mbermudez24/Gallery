@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <img src="${imgSrc}" alt="${`${galleryItem.classList} Photo `}">
                 <div class="title">
                     <h3>${folderName}</h3>
+                    <p>Lugar</p>
                 </div>
             `;
 
