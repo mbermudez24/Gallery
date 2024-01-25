@@ -97,13 +97,24 @@ document.addEventListener("DOMContentLoaded", function () {
     function modification(element, folderName, imageSrc) {
         const password = prompt("Enter the password:");
         if (password === "manuel") {
-            const action = prompt("What do you want to do? (Type 'class' to add a class)");
+            const action = prompt("What do you want to do? (Type 'add' to add a class, 'delete' to remove a class)");
 
-            if (action === "class") {
-                const className = prompt("Enter the name of the class:");
+            if (action === "add") {
+                const className = prompt("Enter the name of the class to add:");
 
                 // Agregar clase al elemento
                 element.classList.add(className);
+
+                // Obtener y actualizar clases almacenadas en localStorage
+                const currentClasses = element.classList;
+                const classesArray = Array.from(currentClasses);
+                const storedClassesKey = `galleryClasses_${folderName}_${imageSrc}`;
+                localStorage.setItem(storedClassesKey, JSON.stringify(classesArray));
+            } else if (action === "delete") {
+                const classNameToDelete = prompt("Enter the name of the class to delete:");
+
+                // Eliminar clase del elemento
+                element.classList.remove(classNameToDelete);
 
                 // Obtener y actualizar clases almacenadas en localStorage
                 const currentClasses = element.classList;
@@ -115,7 +126,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         } else if (password === "") {
             return;
-        } else { alert("Contraseña incorrecta. Acceso denegado."); }
-
+        } else {
+            alert("Incorrect password. Access denied.");
+        }
     }
+
 });
