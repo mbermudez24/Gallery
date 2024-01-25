@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
             galleryItem.innerHTML = `
                 <img src="${imgSrc}" alt="${`${galleryItem.classList} Photo `}">
                 <div class="title">
-                    <h3>Titulo</h3>
+                    <h3>${folderName}</h3>
                 </div>
             `;
 
