@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function loadPhotos(folderName) {
         const folderPath = `assets/img/${folderName}/`;
-        console.log(`FolderPath: ${folderPath}`);
 
         // Obtener las imágenes directamente, no es necesario usar fetch
         const numberOfImages = countImagesInFolder(folderName);
@@ -33,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         <p>${storedContent || defaultContent}</p>
                     </div>
                 `;
-            console.log(`galleryItem: ${galleryItem}`);
 
             galleryItem.addEventListener('mouseover', function () {
                 this.querySelector('img').style.transform = 'scale(1.1)';
@@ -56,9 +54,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function countImagesInFolder(FolderName) {
-        console.log(`FolderName: ${FolderName}`);
+
         if (FolderName === 'Argentina') {
-            console.log('entró')
+
             return 7;
         }
         else if (FolderName === 'Colombia') {
@@ -86,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let i = 1; i <= numberOfImages; i++) {
             images.push(`${folderPath}image${i}.jpg`);
         }
-        console.log(images);
+
         return images;
     }
 
