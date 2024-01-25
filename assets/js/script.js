@@ -130,6 +130,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    window.display = function (folderName) {
+        const galleryItems = document.querySelectorAll('.photo');
+
+        if (galleryItems.length > 0) {
+            galleryItems.forEach(item => {
+                if (folderName.toLowerCase() === 'all' || item.classList.contains(folderName.toLowerCase())) {
+                    // Si el folderName es 'All' o el elemento corresponde al folderName, quita la clase 'hidden'
+                    item.classList.remove('hidden');
+                } else {
+                    // Si el elemento no corresponde al folderName, agrega la clase 'hidden'
+                    item.classList.add('hidden');
+                }
+            });
+        } else {
+            console.error(`No items found for folder: ${folderName}`);
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Cargar fotos de cada carpeta
     loadPhotos("Colombia");
     loadPhotos("Argentina");
