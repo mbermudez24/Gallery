@@ -95,12 +95,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Función que se llama al hacer clic en el botón y pide una contraseña
     function modification(element, folderName, imageSrc) {
-        const password = prompt("Ingrese la contraseña:");
+        const password = prompt("Enter the password:");
         if (password === "manuel") {
-            const action = prompt("¿Qué desea hacer? (Escriba 'clase' para agregar una clase)");
+            const action = prompt("What do you want to do? (Type 'class' to add a class)");
 
-            if (action === "clase") {
-                const className = prompt("Ingrese el nombre de la clase:");
+            if (action === "class") {
+                const className = prompt("Enter the name of the class:");
 
                 // Agregar clase al elemento
                 element.classList.add(className);
@@ -111,10 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const storedClassesKey = `galleryClasses_${folderName}_${imageSrc}`;
                 localStorage.setItem(storedClassesKey, JSON.stringify(classesArray));
             } else {
-                alert("Acción no reconocida.");
+                alert("Unrecognized action.");
             }
-        } else {
-            alert("Contraseña incorrecta. Acceso denegado.");
-        }
+        } else if (password === "") {
+            return;
+        } else { alert("Contraseña incorrecta. Acceso denegado."); }
+
     }
 });
