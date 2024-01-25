@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function countImagesInFolder(FolderName) {
-        if (FolderName === 'assets/img/Argentina/') {
+        if (FolderName === 'Argentina') {
             return 7;
         }
         else if (FolderName === 'Colombia') {
