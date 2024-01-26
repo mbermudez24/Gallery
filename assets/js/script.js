@@ -3,19 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function loadPhotos(folderName) {
         const folderPath = `assets/img/${folderName}/`;
-
-        // Obtener las imágenes directamente, no es necesario usar fetch
         const numberOfImages = countImagesInFolder(folderName);
         const images = generateImagePaths(folderPath, numberOfImages);
 
         images.forEach(imgSrc => {
             const galleryItem = document.createElement('div');
-            galleryItem.classList.add(folderName.toLowerCase());
-            galleryItem.classList.add("photo");
+            galleryItem.classList.add(folderName.toLowerCase(), "photo");
 
-            // Recuperar clases almacenadas en localStorage
             const storedClassesKey = `galleryClasses_${folderName}_${imgSrc}`;
             const storedClasses = localStorage.getItem(storedClassesKey);
+
             if (storedClasses) {
                 const classesArray = JSON.parse(storedClasses);
                 galleryItem.classList.add(...classesArray);
@@ -23,15 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const storedContentKey = `galleryContent_${folderName}_${imgSrc}`;
             const storedContent = localStorage.getItem(storedContentKey);
-            const defaultContent = "Lugar"; // Puedes establecer un valor predeterminado si no hay contenido almacenado
+            const defaultContent = "Lugar";
 
             galleryItem.innerHTML = `
-                    <img src="${imgSrc}" alt="${`${galleryItem.classList} Photo `}">
-                    <div class="title">
-                        <h3>${folderName}</h3>
-                        <p>${storedContent || defaultContent}</p>
-                    </div>
-                `;
+                <img src="${imgSrc}" alt="${galleryItem.classList} Photo ">
+                <div class="title">
+                    <h3>${folderName}</h3>
+                    <p>${storedContent || defaultContent}</p>
+                </div>
+            `;
 
             galleryItem.addEventListener('mouseover', function () {
                 this.querySelector('img').style.transform = 'scale(1.1)';
@@ -53,39 +50,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function countImagesInFolder(FolderName) {
-
-        if (FolderName === 'Argentina') {
-
-            return 7;
-        }
-        else if (FolderName === 'Colombia') {
-            return 12;
-        }
-        else if (FolderName === 'France') {
-            return 6;
-        } else if (FolderName === 'Italy') {
-            return 19;
-        }
-        else if (FolderName === 'Spain') {
-            return 3;
-        }
-        else if (FolderName === 'Switzerland') {
-            return 9;
-        }
-        else if (FolderName === 'USA') {
-            return 19;
-        }
-
+    function countImagesInFolder(folderName) {
+        const imageCounts = {
+            'Argentina': 7,
+            'Colombia': 12,
+            'France': 6,
+            'Italy': 19,
+            'Spain': 3,
+            'Switzerland': 9,
+            'USA': 19,
+        };
+        return imageCounts[folderName] || 0;
     }
 
     function generateImagePaths(folderPath, numberOfImages) {
-        const images = [];
-        for (let i = 1; i <= numberOfImages; i++) {
-            images.push(`${folderPath}image${i}.jpg`);
-        }
-
-        return images;
+        return Array.from({ length: numberOfImages }, (_, i) => `${folderPath}image${i + 1}.jpg`);
     }
 
     function modification(element, folderName, imageSrc) {
@@ -94,24 +73,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const action = prompt("What do you want to do? (Type 'add' to add a class, 'delete' to remove a class, 'modify' to modify <p>)");
 
             if (action === "add" || action === "delete" || action === "modify") {
-                // Acceder al elemento <p> dentro del <div> con la clase "title"
                 const titleParagraph = element.querySelector('.title p');
 
                 if (action === "add") {
                     const className = prompt("Enter the name of the class to add:");
-                    // Agregar clase al elemento
                     element.classList.add(className);
                 } else if (action === "delete") {
                     const classNameToDelete = prompt("Enter the name of the class to delete:");
-                    // Eliminar clase del elemento
                     element.classList.remove(classNameToDelete);
                 } else if (action === "modify") {
                     const newContent = prompt("Enter the new content for the <p>:");
-                    // Modificar el contenido del <p>
                     titleParagraph.textContent = newContent;
                 }
 
-                // Obtener y actualizar clases y contenido almacenados en localStorage
                 const currentClasses = element.classList;
                 const classesArray = Array.from(currentClasses);
                 const storedClassesKey = `galleryClasses_${folderName}_${imageSrc}`;
@@ -119,13 +93,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const storedContentKey = `galleryContent_${folderName}_${imageSrc}`;
                 localStorage.setItem(storedContentKey, titleParagraph.textContent);
-
             } else {
                 alert("Unrecognized action.");
             }
-        } else if (password === "") {
-            return;
-        } else {
+        } else if (password !== "") {
             alert("Incorrect password. Access denied.");
         }
     }
@@ -136,10 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (galleryItems.length > 0) {
             galleryItems.forEach(item => {
                 if (folderName.toLowerCase() === 'all' || item.classList.contains(folderName.toLowerCase())) {
-                    // Si el folderName es 'All' o el elemento corresponde al folderName, quita la clase 'hidden'
                     item.classList.remove('hidden');
                 } else {
-                    // Si el elemento no corresponde al folderName, agrega la clase 'hidden'
                     item.classList.add('hidden');
                 }
             });
@@ -148,19 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-
-
-
-
-
-
-
-
-
-
-
-
-    // Cargar fotos de cada carpeta
+    // Load photos for each folder
     loadPhotos("Colombia");
     loadPhotos("Argentina");
     loadPhotos("Spain");
